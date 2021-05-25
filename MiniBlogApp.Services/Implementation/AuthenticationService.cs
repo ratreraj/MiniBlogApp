@@ -13,9 +13,9 @@ namespace MiniBlogApp.Services.Implementation
     {
         protected SignInManager<User> _singInManager;
         protected UserManager<User> _userManager;
-        protected RoleManager<User> _roleManager;
+        protected RoleManager<Role> _roleManager;
 
-        public AuthenticationService(SignInManager<User> singInManager, UserManager<User> userManager, RoleManager<User> roleManager)
+        public AuthenticationService(SignInManager<User> singInManager, UserManager<User> userManager, RoleManager<Role> roleManager)
         {
             _singInManager = singInManager;
             _userManager = userManager;

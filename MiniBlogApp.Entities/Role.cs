@@ -10,6 +10,6 @@ namespace MiniBlogApp.Entities
     public class Role : IdentityRole<int>
     {
         // TO DO:
-        public string Description { get; set; }
+       // public string Description { get; set; }
     }
 }

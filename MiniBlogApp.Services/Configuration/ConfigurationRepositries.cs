@@ -12,18 +12,17 @@ namespace MiniBlogApp.Services.Configuration
 
         public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<AppDbContext>(option =>
+            services.AddDbContext<AppDbContext>(options =>
             {
-
-                option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
-            //services.AddScoped<IRepository, Repository>();
             services.AddIdentity<User, Role>().
                 AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             services.AddScoped<DbContext, AppDbContext>();
+
+           // services.AddScoped<DbContext, AppDbContext>();
 
         }
 

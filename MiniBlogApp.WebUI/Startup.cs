@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MiniBlogApp.Services.Configuration;
+using MiniBlogApp.WebUI.Configuration;
 
 namespace MiniBlogApp.WebUI
 {
@@ -25,6 +26,8 @@ namespace MiniBlogApp.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigurationRepositries.ConfigureServices(services, Configuration);
+            ConfigurationDependency.ConfigureServices(services, Configuration);
+
             services.AddControllersWithViews();
         }
 

@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MiniBlogApp.Services\MiniBlogApp.Services.csproj" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configuration\" />
+    <ProjectReference Include="..\MiniBlogApp.Services\MiniBlogApp.Services.csproj" />
   </ItemGroup>
 
 </Project>
