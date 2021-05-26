@@ -29,6 +29,8 @@ namespace MiniBlogApp.Repositories
         {
             if (!optionsBuilder.IsConfigured)
             {
+
+                optionsBuilder.UseSqlServer("data source = DESKTOP - HA42MEA\\SQLEXPRESS; initial catalog = MiniBlog; persist security info = True; user id = sa; password = Sql@1234;");
                 optionsBuilder.UseSqlServer("data source=KCDESK-GR150; initial catalog=MiniBlog;persist security info=True;user id=sa;password=Sql@2019;");
             }
 

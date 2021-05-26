@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MiniBlogApp.Services.Configuration;
 using MiniBlogApp.WebUI.Configuration;
+//using EJ2ScheduleSample.Controllers;
 
 namespace MiniBlogApp.WebUI
 {
@@ -18,6 +14,12 @@ namespace MiniBlogApp.WebUI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            //if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt"))
+            //{
+            //    string licenseKey = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt");
+            //    SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+            //}
         }
 
         public IConfiguration Configuration { get; }
