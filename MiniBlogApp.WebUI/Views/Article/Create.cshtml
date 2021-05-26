@@ -1,0 +1,125 @@
+﻿@model MiniBlogApp.WebUI.Models.ArticleModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ArticleModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form id="myForm" method="post" asp-action="Create" asp-controller="Article">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label"></label>
+                <input id="summernote" class="form-control" />
+                @*<span asp-validation-for="Description" class="text-danger"></span>*@
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="ImageUrl" class="control-label"></label>
+                    <div class="custom-file">
+                        <input asp-for="ImageUrl" class="custom-file-input" />
+                        <label class="custom-file-label" for="ImageUrl">Choose file</label>
+                    </div>
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>*@
+            <div class="input-group input-group-sm">
+                <div class="custom-file">
+                    <label asp-for="ImageUrl" class="control-label"></label>
+                    <input asp-for="ImageUrl" type="file" class="custom-file-input form-control-sm">
+                    <label class="custom-file-label" asp-for="ImageUrl">Choose file....</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Url" class="control-label"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="_create" value="Create Atricle" onclick="AjaxFormSubmit()" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@await Component.InvokeAsync("Article")
+
+
+@section Scripts {
+
+    @*@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }*@
+
+    <script>
+        $(document).ready(function () {
+            var filesdata = null;
+
+            $('#summernote').summernote({
+                placeholder: 'Hello Bootstrap 4',
+                tabsize: 2,
+                height: 100,
+                callbacks: {
+                    onImageUpload: function (files) {
+                        for (let i = 0; i < files.length; i++) {
+                            // UploadImage(files[i]);
+                            console.log(files[i]);
+                            filesdata = files[i];
+                            console.log(filesdata);
+                        }
+                    }
+                }
+            });
+
+
+            //$(function () {
+            //    // Set up your summernote instance
+            //    $("#summernote").summernote();
+            //    // When the summernote instance loses focus, update the content of your <textarea>
+            //    $("#summernote").on('summernote.blur', function () {
+            //        var data = $('#summernote').html($('#summernote').summernote('code'));
+            //        console.log(data);
+            //    });
+            //});
+        });
+
+
+        function AjaxFormSubmit() {
+            //Set the URL.
+            var url = $("#myForm").attr("action");
+
+            //Add the Field values to FormData object.
+            console.log(filesdata);
+            var formData = new FormData();
+            formData.append("Id", $("#Id").val());
+            formData.append("Title", $("#Title").val());
+            formData.append("Description", $('#summernote').summernote('code'));
+            formData.append("ImageUrl", filesdata);
+
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false
+            }).done(function (response) {
+                if (response.Status === "success") {
+                    /* $("#lblName").html(response.Name);*/
+                    alert(response);
+                }
+            });
+        }
+
+
+
+    </script>
+}

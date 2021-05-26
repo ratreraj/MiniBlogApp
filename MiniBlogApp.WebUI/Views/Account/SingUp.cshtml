@@ -47,23 +47,10 @@
 
 
 
-@await Component.InvokeAsync("Article")
-
 
 @section Scripts {
     @*<partial name="_ValidationScriptsPartial"  />*@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-
-
-    <script>
-        $(document).ready(function () {
-            $('#summernote').summernote({
-                placeholder: 'Hello Bootstrap 4',
-                tabsize: 2,
-                height: 100
-            });
-        });
-    </script>
 }
 
