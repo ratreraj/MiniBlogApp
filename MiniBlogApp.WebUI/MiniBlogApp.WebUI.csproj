@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>dcf7bb8d-f656-4681-93cb-4a819e2f02af</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiniBlogApp.Services\MiniBlogApp.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\summernotes\" />
   </ItemGroup>
 
 </Project>

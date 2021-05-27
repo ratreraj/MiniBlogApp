@@ -12,7 +12,8 @@
     <div class="col-md-8">
         <form id="myForm" method="post" asp-action="Create" asp-controller="Article">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+            <input type="hidden" id="hdImage" name="hdImage" />
+            <input type="hidden" id="hdUrl" name="hdUrl" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
@@ -67,17 +68,37 @@
                 placeholder: 'Hello Bootstrap 4',
                 tabsize: 2,
                 height: 100,
+                focus: true,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                //callbacks: {
+                //    onImageLinkInsert: function (url) {
+                //        // url is the image url from the dialog
+                //        $img = $('<img>').attr({ src: url })
+                //        $summernote.summernote('insertNode', $img[0]);
+                //    }
+                //},
                 callbacks: {
                     onImageUpload: function (files) {
+                        //$summernote.summernote('insertNode', imgNode);
                         for (let i = 0; i < files.length; i++) {
                             // UploadImage(files[i]);
-                            console.log(files[i]);
-                            filesdata = files[i];
-                            console.log(filesdata);
+
+                            //console.log(files[i]);
+                            $("#hdImage").attr('value', files[i]);
+                            console.log($("#hdImage").val());
                         }
                     }
-                }
+                },
             });
+
 
 
             //$(function () {
@@ -97,13 +118,15 @@
             var url = $("#myForm").attr("action");
 
             //Add the Field values to FormData object.
-            console.log(filesdata);
+            console.log($("#hdImage").val());
             var formData = new FormData();
             formData.append("Id", $("#Id").val());
             formData.append("Title", $("#Title").val());
             formData.append("Description", $('#summernote').summernote('code'));
-            formData.append("ImageUrl", filesdata);
+            formData.append("ImageUrl", $("#hdImage").val());
 
+
+            console.log(formData);
 
             $.ajax({
                 type: 'POST',
