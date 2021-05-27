@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBlogApp.Entities", "MiniBlogApp.Entities\MiniBlogApp.Entities.csproj", "{CB8D5562-F63C-499E-AFF5-424A858455FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniBlogApp.Entities", "MiniBlogApp.Entities\MiniBlogApp.Entities.csproj", "{CB8D5562-F63C-499E-AFF5-424A858455FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBlogApp.Repositories", "MiniBlogApp.Repositories\MiniBlogApp.Repositories.csproj", "{49B778C1-B6EB-44B7-988F-D5B21B5EB9D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniBlogApp.Repositories", "MiniBlogApp.Repositories\MiniBlogApp.Repositories.csproj", "{49B778C1-B6EB-44B7-988F-D5B21B5EB9D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBlogApp.Services", "MiniBlogApp.Services\MiniBlogApp.Services.csproj", "{9BDD9808-A81A-4782-8307-DA8B390FF386}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniBlogApp.Services", "MiniBlogApp.Services\MiniBlogApp.Services.csproj", "{9BDD9808-A81A-4782-8307-DA8B390FF386}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBlogApp.WebUI", "MiniBlogApp.WebUI\MiniBlogApp.WebUI.csproj", "{37309EBA-CF73-4DF1-A53A-0FD0DA5FA6E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiniBlogApp.WebUI", "MiniBlogApp.WebUI\MiniBlogApp.WebUI.csproj", "{37309EBA-CF73-4DF1-A53A-0FD0DA5FA6E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniBlog.WebAPI", "MiniBlog.WebAPI\MiniBlog.WebAPI.csproj", "{8CB69E59-0D59-482F-A3A2-A1EEF6E65562}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{37309EBA-CF73-4DF1-A53A-0FD0DA5FA6E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37309EBA-CF73-4DF1-A53A-0FD0DA5FA6E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37309EBA-CF73-4DF1-A53A-0FD0DA5FA6E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CB69E59-0D59-482F-A3A2-A1EEF6E65562}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CB69E59-0D59-482F-A3A2-A1EEF6E65562}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CB69E59-0D59-482F-A3A2-A1EEF6E65562}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CB69E59-0D59-482F-A3A2-A1EEF6E65562}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

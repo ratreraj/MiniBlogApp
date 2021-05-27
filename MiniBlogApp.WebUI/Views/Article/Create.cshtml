@@ -10,9 +10,10 @@
 <hr />
 <div class="row">
     <div class="col-md-8">
-        <form id="myForm" method="post" asp-action="Create" asp-controller="Article">
+        <form asp-action="Create" asp-controller="Article">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" id="hdImage" name="hdImage" />
+            <input type="hidden" id="hdImage" name="ImageUrl" asp-for="ImageUrl" />
+            <input type="hidden" id="hdDes" name="Description" asp-for="Description" />
             <input type="hidden" id="hdUrl" name="hdUrl" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -24,14 +25,7 @@
                 <input id="summernote" class="form-control" />
                 @*<span asp-validation-for="Description" class="text-danger"></span>*@
             </div>
-            @*<div class="form-group">
-                    <label asp-for="ImageUrl" class="control-label"></label>
-                    <div class="custom-file">
-                        <input asp-for="ImageUrl" class="custom-file-input" />
-                        <label class="custom-file-label" for="ImageUrl">Choose file</label>
-                    </div>
-                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
-                </div>*@
+
             <div class="input-group input-group-sm">
                 <div class="custom-file">
                     <label asp-for="ImageUrl" class="control-label"></label>
@@ -46,7 +40,7 @@
                 <span asp-validation-for="Url" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" id="_create" value="Create Atricle" onclick="AjaxFormSubmit()" class="btn btn-primary" />
+                <input type="submit" value="Create Atricle" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -60,9 +54,9 @@
 
     @*@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }*@
 
-    <script>
+<script>
         $(document).ready(function () {
-            var filesdata = null;
+
 
             $('#summernote').summernote({
                 placeholder: 'Hello Bootstrap 4',
@@ -86,63 +80,130 @@
                 //    }
                 //},
                 callbacks: {
-                    onImageUpload: function (files) {
+                    onImageUpload: function (files, editor, welEditable) {
                         //$summernote.summernote('insertNode', imgNode);
+
                         for (let i = 0; i < files.length; i++) {
-                            // UploadImage(files[i]);
+                            UploadImage(files[i], editor, welEditable);
 
                             //console.log(files[i]);
                             $("#hdImage").attr('value', files[i]);
                             console.log($("#hdImage").val());
                         }
+                    },
+                    onBlur: function () {
+                        console.log('Editable area loses focus');
+                        $("#hdDes").attr('value', $('#summernote').summernote('code'));
+
+                        console.log($("#hdDes").val());
                     }
                 },
+
+
             });
 
 
 
             //$(function () {
             //    // Set up your summernote instance
-            //    $("#summernote").summernote();
+            //   // $("#summernote").summernote();
             //    // When the summernote instance loses focus, update the content of your <textarea>
             //    $("#summernote").on('summernote.blur', function () {
-            //        var data = $('#summernote').html($('#summernote').summernote('code'));
-            //        console.log(data);
+            //        $("#hdDes").value = ('#summernote').summernote('code');
+            //        console.log($("#hdDes").val());
             //    });
             //});
+
+            //$("#btncreate").click(function () {
+            //    var options = {};
+            //    options.url = "https://localhost:44367/api/Article";
+            //    options.type = "POST";
+
+            //    var obj = {};
+            //    obj.Id = $("#Id").val();
+            //    obj.Title = $("#Title").val();
+            //    obj.Description = $('#summernote').summernote('code');
+            //    obj.ImageUrl = $("#hdImage").val();
+
+            //    options.data = JSON.stringify(obj);
+            //    options.contentType = "application/json";
+            //    options.dataType = "html";
+
+            //    options.success = function (msg) {
+            //        $("#msg").html(msg);
+            //    };
+            //    options.error = function () {
+            //        $("#msg").html("Error while calling the Web API!");
+            //    };
+            //    $.ajax(options);
+            //});
+
+
+
         });
+    function UploadImage(file, editor, welEditable) {
+            var url = '@Url.Content("~/")' + "Article/UploadFile";
+
+        formData = new FormData();
+            formData.append("files", file);
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (FileUrl) {
+               alert(FileUrl);
+                var imgNode = document.createElement('img');
+                imgNode.src = FileUrl;
+                $('#summernote').summernote('insertNode', imgNode);
+               // $('#summernote').summernote('insertImage', url, filename);
+                //$('#summernote').summernote('insertImage', FileUrl, function ($image) {
+                //    $image.css('width', $image.width() / 3);
+                //    $image.attr('data-filename', 'retriever');
+                //});
+               // editor.insertImage(welEditable, FileUrl);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+        });
+    }
+
+                        //    function AjaxFormSubmit() {
+                        //        //Set the URL.
+                        //      //  var url = $("#myForm").attr("action");
+
+                        //      var options = {};
+                        //options.url = "/api/customerservice";
+                        //options.type = "POST";
+
+                        //        //Add the Field values to FormData object.
+                        //        console.log($("#hdImage").val());
+                        //        var formData = new FormData();
+                        //        formData.append("Id", $("#Id").val());
+                        //        formData.append("Title", $("#Title").val());
+                        //        formData.append("Description", $('#summernote').summernote('code'));
+                        //        formData.append("ImageUrl", $("#hdImage").val());
 
 
-        function AjaxFormSubmit() {
-            //Set the URL.
-            var url = $("#myForm").attr("action");
+                        //        console.log(formData);
 
-            //Add the Field values to FormData object.
-            console.log($("#hdImage").val());
-            var formData = new FormData();
-            formData.append("Id", $("#Id").val());
-            formData.append("Title", $("#Title").val());
-            formData.append("Description", $('#summernote').summernote('code'));
-            formData.append("ImageUrl", $("#hdImage").val());
-
-
-            console.log(formData);
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: formData,
-                processData: false,
-                contentType: false
-            }).done(function (response) {
-                if (response.Status === "success") {
-                    /* $("#lblName").html(response.Name);*/
-                    alert(response);
-                }
-            });
-        }
+                        //        $.ajax({
+                        //            type: 'POST',
+                        //            url: url,
+                        //            data: formData,
+                        //            processData: false,
+                        //            contentType: false
+                        //        }).done(function (response) {
+                        //            if (response.Status === "success") {
+                        //                /* $("#lblName").html(response.Name);*/
+                        //                alert(response);
+                        //            }
+                        //        });
+                        //    }
 
 
-
-    </script>
+</script>
 }
