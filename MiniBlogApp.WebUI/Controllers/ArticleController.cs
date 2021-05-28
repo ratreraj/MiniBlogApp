@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MiniBlogApp.WebUI.Controllers
@@ -13,9 +14,10 @@ namespace MiniBlogApp.WebUI.Controllers
     public class ArticleController : Controller
     {
 
-        private IHostingEnvironment Environment;
+        private IWebHostEnvironment Environment;
 
-        public ArticleController(IHostingEnvironment _environment)
+
+        public ArticleController(IWebHostEnvironment _environment)
         {
             Environment = _environment;
         }
@@ -30,46 +32,53 @@ namespace MiniBlogApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public JsonResult Create(ArticleModel model)
+        public IActionResult Create(ArticleModel model)
         {
             ModelState.Remove("Id");
             if (ModelState.IsValid)
             {
 
+                //string text = "No image <img alt='sss' src='something' /> asdasd";
+                //Regex reg = new Regex(@"</?img((\s+\w+(\s*=\s*(?:"".*?""|\'.*?\'|[^\'"">\s]+))?)+\s*|\s*)/?>");
+                //string result = reg.Replace(model.Description, string.Empty);
+
+                //var regex = new Regex("<a [^>]*href=(?:'(?<href>.*?)')|(?:\"(?<href>.*?)\")", RegexOptions.IgnoreCase);
+                //var urls = regex.Matches(model.Description).OfType<Match>().Select(m => m.Groups["href"].Value).SingleOrDefault();
+
+                string GetPtag = GetFirstParagraph(model.Description);
+                string GetImageTag = GetImgTag(model.Description);
+                string GetLinkTag = GetAnchorTag(model.Description);
+
+                //Regex regex = new Regex("<a [^>]*href=(?:'(?<href>.*?)')|(?:\"(?<href>.*?)\")", RegexOptions.IgnoreCase);
+                //Match match;
+                //for (match = regex.Match(model.Description); match.Success; match = match.NextMatch())
+                //{
+
+                //    foreach (Group group in match.Groups)
+                //    {
+                //        var url = group;
+                //    }
+                //}
 
             }
-            return Json(model);
+            return View();
         }
         [AcceptVerbs("Post")]
         [HttpPost]
         public JsonResult UploadFile(List<IFormFile> files)
         {
-            // long size = files.Sum(f => f.Length);
 
-            // full path to file in temp location
-            //var filePath = Path.GetTempFileName();
-
-            //foreach (var formFile in files)
-            //{
-            //    if (formFile.Length > 0)
-            //    {
-            //        using (var stream = new FileStream(filePath, FileMode.Create))
-            //        {
-            //            //await formFile.CopyToAsync(stream);
-            //        }
-            //    }
-            //}
             string filepath = null;
 
-            string stringbase64 = null;
+            //string stringbase64 = null;
 
-            string extention = null;
+
             string ext = null;
 
             string wwwPath = this.Environment.WebRootPath;
             string contentPath = this.Environment.ContentRootPath;
 
-            string path = Path.Combine("D:\\Dot Net Tricks\\Imgae");
+            string path = Path.Combine(this.Environment.ContentRootPath, "Upload");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -89,14 +98,56 @@ namespace MiniBlogApp.WebUI.Controllers
                     // filepath = "https://images.ctfassets.net/hrltx12pl8hq/3MbF54EhWUhsXunc5Keueb/60774fbbff86e6bf6776f1e17a8016b4/04-nature_721703848.jpg?fit=fill&w=480&h=270";
                 }
             }
-
-
-            if (ext == ".jpg")
-                extention = "jpg";
+            //string extention = string.Empty;
+            //if (ext == ".jpg")
+            //    extention = "jpg";
             Byte[] bytes = System.IO.File.ReadAllBytes(filepath);
             filepath = "data:image/" + ext + ";base64," + Convert.ToBase64String(bytes);
 
+
+
             return Json(filepath);
+        }
+
+
+        private string GetFirstParagraph(string htmltext)
+        {
+            Match m = Regex.Match(htmltext, @"<p>\s*(.+?)\s*</p>");
+            if (m.Success)
+            {
+                return m.Value;
+            }
+            else
+            {
+                return htmltext;
+            }
+        }
+
+
+        private string GetImgTag(string htmltext)
+        {
+            Match m = Regex.Match(htmltext, @"</?img((\s+\w+(\s*=\s*(?:"".*?""|\'.*?\'|[^\'"">\s]+))?)+\s*|\s*)/?>");
+            if (m.Success)
+            {
+                return m.Value;
+            }
+            else
+            {
+                return htmltext;
+            }
+        }
+
+        private string GetAnchorTag(string htmltext)
+        {
+            Match m = Regex.Match(htmltext, @"<a [^>]*?>(?<text>.*?)</a>");
+            if (m.Success)
+            {
+                return m.Value;
+            }
+            else
+            {
+                return htmltext;
+            }
         }
     }
 }

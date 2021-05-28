@@ -52,9 +52,9 @@
 
 @section Scripts {
 
-    @*@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }*@
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
-<script>
+    <script>
         $(document).ready(function () {
 
 
@@ -72,30 +72,30 @@
                     ['insert', ['link', 'picture', 'video']],
                     ['view', ['fullscreen', 'codeview', 'help']]
                 ],
-                //callbacks: {
-                //    onImageLinkInsert: function (url) {
-                //        // url is the image url from the dialog
-                //        $img = $('<img>').attr({ src: url })
-                //        $summernote.summernote('insertNode', $img[0]);
-                //    }
-                //},
+
                 callbacks: {
-                    onImageUpload: function (files, editor, welEditable) {
+                    onImageUpload: function (files) {
                         //$summernote.summernote('insertNode', imgNode);
 
                         for (let i = 0; i < files.length; i++) {
-                            UploadImage(files[i], editor, welEditable);
-
+                            UploadImage(files[i]);
                             //console.log(files[i]);
-                            $("#hdImage").attr('value', files[i]);
-                            console.log($("#hdImage").val());
+                           
+                            //$("#hdDes").attr('value', $('#summernote').summernote('code'));
+                            //console.log($("#hdDes").val());
+                            //console.log($("#hdImage").val());
                         }
-                    },
+                    }
+                    ,
                     onBlur: function () {
-                        console.log('Editable area loses focus');
-                        $("#hdDes").attr('value', $('#summernote').summernote('code'));
+                        //console.log('Editable area loses focus');
 
-                        console.log($("#hdDes").val());
+                       // $("#hdDes").attr('value', $('#summernote').summernote('code').replace(/<p>(.*?)<\/p>/g, ""));
+                        $("#hdDes").attr('value', $('#summernote').summernote('code'));
+                       // $("#hdDes").attr('value', $($("#summernote").code()).text());
+
+                       // console.log($("#hdDes").val());
+
                     }
                 },
 
@@ -141,7 +141,7 @@
 
 
         });
-    function UploadImage(file, editor, welEditable) {
+    function UploadImage(file) {
             var url = '@Url.Content("~/")' + "Article/UploadFile";
 
         formData = new FormData();
@@ -158,12 +158,8 @@
                 var imgNode = document.createElement('img');
                 imgNode.src = FileUrl;
                 $('#summernote').summernote('insertNode', imgNode);
-               // $('#summernote').summernote('insertImage', url, filename);
-                //$('#summernote').summernote('insertImage', FileUrl, function ($image) {
-                //    $image.css('width', $image.width() / 3);
-                //    $image.attr('data-filename', 'retriever');
-                //});
-               // editor.insertImage(welEditable, FileUrl);
+                $("#hdImage").attr('value', FileUrl);
+
             },
             error: function (data) {
                 alert(data.responseText);
@@ -205,5 +201,5 @@
                         //    }
 
 
-</script>
+    </script>
 }
