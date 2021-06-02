@@ -11,10 +11,10 @@ namespace MiniBlogApp.WebUI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
-
+            Env = env;
             //if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt"))
             //{
             //    string licenseKey = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt");
@@ -23,6 +23,7 @@ namespace MiniBlogApp.WebUI
         }
 
         public IConfiguration Configuration { get; }
+        IWebHostEnvironment Env;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,7 +31,13 @@ namespace MiniBlogApp.WebUI
             ConfigurationRepositries.ConfigureServices(services, Configuration);
             ConfigurationDependency.ConfigureServices(services, Configuration);
 
-            services.AddControllersWithViews();
+           // services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            var builder = services.AddControllersWithViews();
+
+            if (Env.IsDevelopment())
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,8 +63,13 @@ namespace MiniBlogApp.WebUI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+
+                endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Article}/{action=Index}/{id?}");
             });
         }
     }

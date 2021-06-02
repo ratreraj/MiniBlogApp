@@ -1,37 +1,19 @@
-﻿<h1>Hello from view component</h1>
+﻿@model IEnumerable<MiniBlogApp.Entities.Comments>
 
-@*@using Syncfusion.EJ2
-    @model MiniBlogApp.WebUI.Component.RichTextEditorModel
-    @section ControlsSection{
-        <div class="col-lg-12 control-section">
-            <div class="control-wrapper">
-                <div style='padding-top:40px;'>
-                    <form method="post">
-                        <ejs-richtexteditor ejs-for="Value" id="RTEfor">
-                        </ejs-richtexteditor>
-                        <div id="errorMessage">
-                            <span asp-validation-for="Value"></span>
-                        </div>
-                        <div id="submitbutton">
-                            <ejs-button id="submitButton" content="Submit"></ejs-button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    }
-    <style>
-        #submitbutton {
-            margin: 10px auto;
-            text-align: center;
-        }
+@await Component.InvokeAsync("Comment", null)
 
-        #errorMessage {
-            color: red;
-        }
-    </style>*@
+@foreach (var item in Model)
+{
+
+<blockquote class="blockquote">
+    <p class="mb-0">@item.Text</p>
+</blockquote>
 
 
+@await Component.InvokeAsync("Reply", new { id = item.Id })
+
+}
 
 
+@*<h1>Hello from view component</h1>*@
 

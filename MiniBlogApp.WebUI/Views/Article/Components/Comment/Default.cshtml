@@ -1,0 +1,15 @@
+﻿@model MiniBlogApp.Entities.Comments
+
+<form asp-action="Commnet" class="comment-from">
+    <input type="hidden" asp-for="ArticleId">
+    <input type="hidden" asp-for="UserId">
+
+    <div class="form-row">
+        <div class="col-md-10">
+            <input type="text" asp-for="Text" class="form-control" placeholder="enter your comment here">
+        </div>
+        <div class="col-md-2">
+            <input type="submit" class="btn btn-primary float-right" value="Comments" />
+        </div>
+    </div>
+</form>

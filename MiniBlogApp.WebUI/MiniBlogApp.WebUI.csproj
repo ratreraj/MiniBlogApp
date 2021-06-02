@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\" />
     <Folder Include="wwwroot\lib\summernotes\" />
     <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>

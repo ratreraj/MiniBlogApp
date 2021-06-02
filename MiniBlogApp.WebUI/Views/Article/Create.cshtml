@@ -4,9 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>ArticleModel</h4>
+<h4>Create Article</h4>
 <hr />
 <div class="row">
     <div class="col-md-8">
@@ -26,19 +25,7 @@
                 @*<span asp-validation-for="Description" class="text-danger"></span>*@
             </div>
 
-            <div class="input-group input-group-sm">
-                <div class="custom-file">
-                    <label asp-for="ImageUrl" class="control-label"></label>
-                    <input asp-for="ImageUrl" type="file" class="custom-file-input form-control-sm">
-                    <label class="custom-file-label" asp-for="ImageUrl">Choose file....</label>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Url" class="control-label"></label>
-                <input asp-for="Url" class="form-control" />
-                <span asp-validation-for="Url" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <input type="submit" value="Create Atricle" class="btn btn-primary" />
             </div>
@@ -47,7 +34,7 @@
 </div>
 
 
-@await Component.InvokeAsync("Article")
+
 
 
 @section Scripts {
@@ -61,7 +48,7 @@
             $('#summernote').summernote({
                 placeholder: 'Hello Bootstrap 4',
                 tabsize: 2,
-                height: 100,
+                height: 200,
                 focus: true,
                 toolbar: [
                     ['style', ['style']],
@@ -80,7 +67,7 @@
                         for (let i = 0; i < files.length; i++) {
                             UploadImage(files[i]);
                             //console.log(files[i]);
-                           
+
                             //$("#hdDes").attr('value', $('#summernote').summernote('code'));
                             //console.log($("#hdDes").val());
                             //console.log($("#hdImage").val());
@@ -103,40 +90,6 @@
             });
 
 
-
-            //$(function () {
-            //    // Set up your summernote instance
-            //   // $("#summernote").summernote();
-            //    // When the summernote instance loses focus, update the content of your <textarea>
-            //    $("#summernote").on('summernote.blur', function () {
-            //        $("#hdDes").value = ('#summernote').summernote('code');
-            //        console.log($("#hdDes").val());
-            //    });
-            //});
-
-            //$("#btncreate").click(function () {
-            //    var options = {};
-            //    options.url = "https://localhost:44367/api/Article";
-            //    options.type = "POST";
-
-            //    var obj = {};
-            //    obj.Id = $("#Id").val();
-            //    obj.Title = $("#Title").val();
-            //    obj.Description = $('#summernote').summernote('code');
-            //    obj.ImageUrl = $("#hdImage").val();
-
-            //    options.data = JSON.stringify(obj);
-            //    options.contentType = "application/json";
-            //    options.dataType = "html";
-
-            //    options.success = function (msg) {
-            //        $("#msg").html(msg);
-            //    };
-            //    options.error = function () {
-            //        $("#msg").html("Error while calling the Web API!");
-            //    };
-            //    $.ajax(options);
-            //});
 
 
 
@@ -167,38 +120,7 @@
         });
     }
 
-                        //    function AjaxFormSubmit() {
-                        //        //Set the URL.
-                        //      //  var url = $("#myForm").attr("action");
 
-                        //      var options = {};
-                        //options.url = "/api/customerservice";
-                        //options.type = "POST";
-
-                        //        //Add the Field values to FormData object.
-                        //        console.log($("#hdImage").val());
-                        //        var formData = new FormData();
-                        //        formData.append("Id", $("#Id").val());
-                        //        formData.append("Title", $("#Title").val());
-                        //        formData.append("Description", $('#summernote').summernote('code'));
-                        //        formData.append("ImageUrl", $("#hdImage").val());
-
-
-                        //        console.log(formData);
-
-                        //        $.ajax({
-                        //            type: 'POST',
-                        //            url: url,
-                        //            data: formData,
-                        //            processData: false,
-                        //            contentType: false
-                        //        }).done(function (response) {
-                        //            if (response.Status === "success") {
-                        //                /* $("#lblName").html(response.Name);*/
-                        //                alert(response);
-                        //            }
-                        //        });
-                        //    }
 
 
     </script>

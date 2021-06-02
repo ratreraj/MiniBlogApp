@@ -46,7 +46,7 @@ namespace MiniBlogApp.Services.Implementation
             if (result.Succeeded)
             {
                 //Admin ,User
-                string role = "Admin";
+                string role = "User";
                 var res = _userManager.AddToRoleAsync(user, role).Result;
                 if (res.Succeeded)
                 {

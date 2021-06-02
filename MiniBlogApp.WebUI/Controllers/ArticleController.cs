@@ -1,11 +1,17 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using MiniBlogApp.Entities;
+using MiniBlogApp.Repositories.Interfaces;
 using MiniBlogApp.WebUI.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -14,16 +20,39 @@ namespace MiniBlogApp.WebUI.Controllers
     public class ArticleController : Controller
     {
 
+        private IRepository<Articles> _repo;
         private IWebHostEnvironment Environment;
 
-
-        public ArticleController(IWebHostEnvironment _environment)
+        private readonly IConfiguration _config;
+        private readonly HttpClient client;
+        public ArticleController(IWebHostEnvironment _environment, IRepository<Articles> repository, IConfiguration configuration)
         {
             Environment = _environment;
+            _repo = repository;
+
+            _config = configuration;
+            client = new HttpClient();
+            Uri uri = new Uri(_config["apiAddress"]);
+            client.BaseAddress = uri;
+
         }
         public IActionResult Index()
         {
-            return View();
+
+
+            // IEnumerable<Articles> articles = _repo.GetAll().ToList();
+            IEnumerable<Articles> articles = new List<Articles>();
+            var response = client.GetAsync(client.BaseAddress + "/Article/GetArticle").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string result = response.Content.ReadAsStringAsync().Result;
+                articles = JsonSerializer.Deserialize<IEnumerable<Articles>>(result);
+
+
+
+            }
+            return View(articles);
+
         }
 
         public IActionResult Create()
@@ -38,28 +67,24 @@ namespace MiniBlogApp.WebUI.Controllers
             if (ModelState.IsValid)
             {
 
-                //string text = "No image <img alt='sss' src='something' /> asdasd";
-                //Regex reg = new Regex(@"</?img((\s+\w+(\s*=\s*(?:"".*?""|\'.*?\'|[^\'"">\s]+))?)+\s*|\s*)/?>");
-                //string result = reg.Replace(model.Description, string.Empty);
-
-                //var regex = new Regex("<a [^>]*href=(?:'(?<href>.*?)')|(?:\"(?<href>.*?)\")", RegexOptions.IgnoreCase);
-                //var urls = regex.Matches(model.Description).OfType<Match>().Select(m => m.Groups["href"].Value).SingleOrDefault();
-
                 string GetPtag = GetFirstParagraph(model.Description);
                 string GetImageTag = GetImgTag(model.Description);
                 string GetLinkTag = GetAnchorTag(model.Description);
 
-                //Regex regex = new Regex("<a [^>]*href=(?:'(?<href>.*?)')|(?:\"(?<href>.*?)\")", RegexOptions.IgnoreCase);
-                //Match match;
-                //for (match = regex.Match(model.Description); match.Success; match = match.NextMatch())
-                //{
+                model.Description = GetPtag;
+                model.ImageUrl = GetImageTag;
+                model.Url = GetLinkTag;
 
-                //    foreach (Group group in match.Groups)
-                //    {
-                //        var url = group;
-                //    }
-                //}
+                string strData = JsonSerializer.Serialize(model);
+                StringContent content = new StringContent(strData, Encoding.UTF8, "application/json");
 
+                var response = client.PostAsync(client.BaseAddress + "/Article/CreateArticle", content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+
+                    return Redirect("Index");
+
+                }
             }
             return View();
         }
@@ -109,17 +134,40 @@ namespace MiniBlogApp.WebUI.Controllers
             return Json(filepath);
         }
 
+        [HttpPost]
+        public IActionResult Commnet(Comments model)
+        {
 
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Reply(Reply model)
+        {
+
+            return RedirectToAction("Index");
+        }
         private string GetFirstParagraph(string htmltext)
         {
             Match m = Regex.Match(htmltext, @"<p>\s*(.+?)\s*</p>");
             if (m.Success)
             {
-                return m.Value;
+                Match mm = Regex.Match(htmltext, @"</?img((\s+\w+(\s*=\s*(?:"".*?""|\'.*?\'|[^\'"">\s]+))?)+\s*|\s*)/?>");
+                if (!mm.Success)
+                {
+                    return m.Value;
+                }
+                else
+                {
+                    Regex reg = new Regex(@"</?img((\s+\w+(\s*=\s*(?:"".*?""|\'.*?\'|[^\'"">\s]+))?)+\s*|\s*)/?>");
+                    string result = reg.Replace(htmltext, string.Empty);
+                    return result;
+                }
+
             }
             else
             {
-                return htmltext;
+                return null;
             }
         }
 
@@ -133,7 +181,7 @@ namespace MiniBlogApp.WebUI.Controllers
             }
             else
             {
-                return htmltext;
+                return null;
             }
         }
 
@@ -142,11 +190,21 @@ namespace MiniBlogApp.WebUI.Controllers
             Match m = Regex.Match(htmltext, @"<a [^>]*?>(?<text>.*?)</a>");
             if (m.Success)
             {
-                return m.Value;
+                Match mm = Regex.Match(htmltext, @"</?img((\s+\w+(\s*=\s*(?:"".*?""|\'.*?\'|[^\'"">\s]+))?)+\s*|\s*)/?>");
+                if (!mm.Success)
+                {
+                    return m.Value;
+                }
+                else
+                {
+                    Regex reg = new Regex(@"</?img((\s+\w+(\s*=\s*(?:"".*?""|\'.*?\'|[^\'"">\s]+))?)+\s*|\s*)/?>");
+                    string result = reg.Replace(htmltext, string.Empty);
+                    return result;
+                }
             }
             else
             {
-                return htmltext;
+                return null;
             }
         }
     }

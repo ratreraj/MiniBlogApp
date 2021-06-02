@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MiniBlogApp.Entities;
+using MiniBlogApp.Repositories.Implementions;
+using MiniBlogApp.Repositories.Interfaces;
 using MiniBlogApp.Services.Implementation;
 using MiniBlogApp.Services.Interfaces;
 using System;
@@ -15,6 +18,9 @@ namespace MiniBlogApp.WebUI.Configuration
         {
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IRepository<Articles>, Repository<Articles>>();
+            services.AddScoped<IRepository<Comments>, Repository<Comments>>();
+            services.AddScoped<IRepository<Reply>, Repository<Reply>>();
         }
     }
 }

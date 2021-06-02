@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MiniBlog.WebAPI.Configuration;
+using MiniBlogApp.Services.Implementation;
+using MiniBlogApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +29,11 @@ namespace MiniBlog.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            ConfigurationWebAPI.ConfigureServices(services, Configuration);
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MiniBlog.WebAPI", Version = "v1" });
-            });
+          
+
+         
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

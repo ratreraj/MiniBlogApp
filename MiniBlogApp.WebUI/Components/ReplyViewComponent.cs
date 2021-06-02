@@ -3,18 +3,16 @@ using MiniBlogApp.Entities;
 using MiniBlogApp.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MiniBlogApp.WebUI.Component
+namespace MiniBlogApp.WebUI.Components
 {
-
-
-    public class ArticleViewComponent : ViewComponent
+    public class ReplyViewComponent : ViewComponent
     {
-        private IRepository<Comments> _repo;
-        public ArticleViewComponent(IRepository<Comments> repository)
+
+        private IRepository<Reply> _repo;
+        public ReplyViewComponent(IRepository<Reply> repository)
         {
             _repo = repository;
 
@@ -25,17 +23,11 @@ namespace MiniBlogApp.WebUI.Component
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
 
-            
-            IEnumerable<Comments> comments = (from c in _repo.GetAll().ToList().Where(x => x.ArticleId == id)
-                                              select c
+            IEnumerable<Reply> replies = (from c in _repo.GetAll().ToList().Where(x => x.CommentId == id)
+                                          select c
                                               );
 
-           
-
-
-            return View(comments);
+            return View(replies);
         }
-
-
     }
 }
